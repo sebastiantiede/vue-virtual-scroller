@@ -1,6 +1,7 @@
 <template>
-  <div
+  <component
     v-observe-visibility="handleVisibilityChange"
+    :is="scrollerTag"
     class="vue-recycle-scroller"
     :class="{
       ready,
@@ -9,15 +10,16 @@
     }"
     @scroll.passive="handleScroll"
   >
-    <div
+    <component
       v-if="$slots.before"
+      :is="beforeListTag"
       ref="before"
       class="vue-recycle-scroller__slot"
     >
       <slot
         name="before"
       />
-    </div>
+    </component>
 
     <component
       :is="listTag"
@@ -65,18 +67,19 @@
       />
     </component>
 
-    <div
+    <component
       v-if="$slots.after"
+      :is="afterListTag"
       ref="after"
       class="vue-recycle-scroller__slot"
     >
       <slot
         name="after"
       />
-    </div>
+    </component>
 
     <ResizeObserver @notify="handleResize" />
-  </div>
+  </component>
 </template>
 
 <script>
@@ -171,6 +174,11 @@ export default {
       default: false,
     },
 
+    scrollerTag: {
+      type: String,
+      default: 'div',
+    },
+
     listTag: {
       type: String,
       default: 'div',
@@ -180,6 +188,16 @@ export default {
       type: String,
       default: 'div',
     },
+
+    beforeListTag: {
+      type: String,
+      default: 'div',
+    },
+
+    afterListTag: {
+      type: String,
+      default: 'div',
+    },    
 
     listClass: {
       type: [String, Object, Array],
